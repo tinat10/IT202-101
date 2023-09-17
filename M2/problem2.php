@@ -13,7 +13,8 @@ function getTotal($arr) {
     }
 
     //TODO do rounding stuff here
-    echo "The total is " + $total. var_export($total, true);
+    $total = round($total,2); // round(number, number of decimal places you want to round to)
+    echo "The total is " . var_export($total, true);
 }
 echo "Problem 2: Adding Floats<br>";
 ?>
