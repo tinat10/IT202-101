@@ -8,6 +8,7 @@ function getTotal($arr) {
     $total = 0.00;
     //TODO do adding here
 
+# UCID: tkt | September 17, 2023
     foreach ($arr as $item) {
         $total+=$item;
     }

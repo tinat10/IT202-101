@@ -7,7 +7,7 @@ function processArray($arr) {
      echo "<br>Processing Array:<br><pre>" . var_export($arr, true) . "</pre>";
      echo "<br>Odds output:<br>";
 
-# UCID: tkt 09/17/2023
+# UCID: tkt | 09/17/2023
 
     $final = [];
 
