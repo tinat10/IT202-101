@@ -11,9 +11,9 @@ function bePositive($arr) {
 
     foreach($arr as $item) {
         if ($item < 0)
-            echo($item*-1 + " ");
+            echo($item*-1 . " | ");
         elseif ($item > 0)
-            echo($item + " ");
+            echo($item . " | ");
     }
 
     //hint: may want to use var_dump() to show final data types
