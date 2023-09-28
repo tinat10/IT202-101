@@ -1,0 +1,17 @@
+h1 {
+    color:blue;
+}
+
+h2 {
+    color: aquamarine;
+}
+
+body {
+    background-color: orange;
+    color: purple; /* This changes everything that doesn't already have a set color in the body. */
+}
+
+p {
+    color:red;
+    font: 12px;
+}
