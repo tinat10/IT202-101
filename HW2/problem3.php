@@ -18,6 +18,7 @@ function bePositive($arr) {
             echo($item . " | ");
     }
 
+    var_dump($arr);
     //hint: may want to use var_dump() to show final data types
 }
 echo "Problem 3: Be Positive<br>";
