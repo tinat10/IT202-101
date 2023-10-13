@@ -7,11 +7,14 @@
     <script>
         window.addEventListener("load", () => {
             console.log("loaded via javascript");
+            getCurrentSelection();
+
             //TODO: add any extra onload processing you may need here
         });
         function getCurrentSelection() {
             setTimeout(() => {
-                document.getElementById('start').innerHTML = "yourTextHere";
+                const list = document.getElementsByTagName("h1")[0];
+                list.text() = "yourTextHere";
 
                 //                getElementById("h1") = link.text();
 
