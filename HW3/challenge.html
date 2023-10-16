@@ -5,24 +5,31 @@
     <title>Problem 1</title>
     <meta charset="utf-8" />
     <script>
-        window.addEventListener("load", () => {
+        window.addEventListener("click", () => {
             console.log("loaded via javascript");
+            //TODO: add any extra onload processing you may need here
+        
+            updateCurrentPage(window.location.href);
             getCurrentSelection();
 
-            //TODO: add any extra onload processing you may need here
         });
         function getCurrentSelection() {
             setTimeout(() => {
-                const list = document.getElementsByTagName("h1")[0];
-                list.text() = "yourTextHere";
+                
+                document.querySelector("h1").innerHTML = window.location.href;
+                document.querySelector("title").innerHTML = window.location.href;
 
-                //                getElementById("h1") = link.text();
+                console.log(window.location.href);
 
+                //list.textContent() = "yourTextHere";
+                $selection = window.location.href;
+                //getElementById("h1") = link.text();
 
                 //added this delay here as some solutions may require it to update properly (i.e., click code may complete before the navigation changes)
                 //TODO: add code for processing the current selection 
-                
-                updateCurrentPage();
+                updateCurrentPage(window.location.href);
+
+                return $selection;
                 //Note: likely you'll want to call updateCurrentPage towards the end
             }, 100);
         }
