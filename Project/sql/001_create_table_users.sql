@@ -1,3 +1,5 @@
+-- Active: 1694644903912@@db.ethereallab.app@3306@tkt
+/* UCI: tkt */
 CREATE TABLE IF NOT EXISTS `Users` (
     `id` INT NOT NULL AUTO_INCREMENT,
     `email` VARCHAR(100) NOT NULL,
