@@ -25,7 +25,7 @@
 
             password: <input type = "password">
         </form>
-        <?php 
+        <?php  
         if (isset($_POST["name"])) // isset checks if its null or not
             echo $_POST["name"];
         
