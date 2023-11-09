@@ -8,7 +8,7 @@ $localWorks = true; //some people have issues with localhost for the cookie para
 //if you're one of those people make this false
 
 //this is an extra condition added to "resolve" the localhost issue for the session cookie
-if (($localWorks && $domain == "localhost") || $domain != "localhost") {
+/*if (($localWorks && $domain == "localhost") || $domain != "localhost") {
     session_set_cookie_params([
         "lifetime" => 60 * 60,
         "path" => "/Project",
@@ -18,7 +18,7 @@ if (($localWorks && $domain == "localhost") || $domain != "localhost") {
         "httponly" => true,
         "samesite" => "lax"
     ]);
-}
+}*/
 require_once(__DIR__ . "/../lib/functions.php");
 
 ?>
@@ -27,6 +27,7 @@ require_once(__DIR__ . "/../lib/functions.php");
         <?php if (is_logged_in()) : ?>
             <li><a href="home.php">Home</a></li>
             <li><a href="profile.php">Profile</a></li>
+            <li><a href="create_role.php">Create Role</a></li>
             <?php endif; ?>
         <?php if (!is_logged_in()) : ?>
             <li><a href="login.php">Login</a></li>
