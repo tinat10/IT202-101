@@ -6,15 +6,22 @@
         <script> //javascript starts!
             console.log("sample javascript")
             var a = 1+2;
+
+            function myFunction() {
+                document.getElementById("test").innerHTML = "updated";
+                window.alert("hooooo");
+            }
         </script> <!-- javascript ends -->
         <link rel="stylesheet" href="demo.css"></link>
     </head>
     <body>
+        <button onclick="myFunction">tryMe</button>
+        <p id="test"></p>
         <p>test code</p>
         <form method="post">
             search: <input type="text" name ="name">
             <input type = "text" name="second" >
-            <input type = "submit">
+            <input type = "submit" onclick="myFunction()">
 
             password: <input type = "password">
         </form>
