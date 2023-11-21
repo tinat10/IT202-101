@@ -23,6 +23,7 @@ var killed = false;
 var x = 50; // X position
 var y = 100; // Y position
 var speed = 6; // Distance to move each frame
+var villainSpeed = 3;
 var sideLength = 50; // Length of each side of the square
 
 // FLags to track which keys are pressed
@@ -128,7 +129,8 @@ function endGame() {
 
   if (killed) 
     context.fillText('GAME OVER! YOU HAVE BEEN KILLED!', canvas.width / 2, canvas.height / 3);
-    speed = 0
+    speed = 0;
+    villainSpeed = 0;
 
 }
 
@@ -150,15 +152,11 @@ function erase() {
 }
 
 function badPlayerMove() {
-    if (evilY <= 0)
-        evilY += 3.0;
-    else 
-        evilY -= 3.0;
-  
+    evilY += villainSpeed;
 
   // Keep the square within the bounds
   if (evilY + 50 > canvas.height) {
-    evilY = canvas.height - 50;
+    evilY = 0;
   }
   if (evilY < 0) {
     evilY = 0;
