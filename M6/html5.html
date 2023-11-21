@@ -1,13 +1,23 @@
 // Collect The Square game
+
+<html> 
+    <canvas id="canvas" width="600" height="400" tabindex="1"></canvas>
+    <style> 
+        #canvas {
+            width: 600px;
+            height: 400px;
+            border: 1px solid black;
+        }
+    </style>
 <script>
-    
 // Get a reference to the canvas DOM element
-var canvas = document.getElementById('canvas');
+// var canvas = document.getElementById('canvas');
 // Get the canvas drawing context
 var context = canvas.getContext('2d');
 
 // Your score
 var score = 0;
+var killed = false;
 
 // Properties for your square
 var x = 50; // X position
@@ -25,6 +35,9 @@ var left = false;
 var targetX = 0;
 var targetY = 0;
 var targetLength = 25;
+
+var evilX = Math.round(Math.random() * canvas.width - 50);
+var evilY = Math.round(Math.random() * canvas.height - 50);
 
 // Determine if number a is within the range b to c (exclusive)
 function isWithin(a, b, c) {
@@ -97,8 +110,9 @@ function startGame() {
   canvas.removeEventListener('click', startGame);
   // Put the target at a random starting point
 	moveTarget();
+    moveBadSquare();
   // Kick off the draw loop
-  draw();
+    draw();
 }
 
 // Show the game over screen
@@ -111,12 +125,22 @@ function endGame() {
   context.font = '24px Arial';
   context.textAlign = 'center';
   context.fillText('Final Score: ' + score, canvas.width / 2, canvas.height / 2);
+
+  if (killed) 
+    context.fillText('GAME OVER! YOU HAVE BEEN KILLED!', canvas.width / 2, canvas.height / 3);
+    speed = 0
+
 }
 
 // Move the target square to a random position
 function moveTarget() {
   targetX = Math.round(Math.random() * canvas.width - targetLength);
-  targetY = Math.round(Math.random() * canvas.height - targetLength)
+  targetY = Math.round(Math.random() * canvas.height - targetLength);
+}
+
+function moveBadSquare() {
+    opponentX = Math.round(Math.random() * canvas.width - targetLength);
+    opponentY = Math.round(Math.random() * canvas.height - targetLength);
 }
 
 // Clear the canvas
@@ -125,9 +149,33 @@ function erase() {
   context.fillRect(0, 0, 600, 400);
 }
 
+function badPlayerMove() {
+    if (evilY <= 0)
+        evilY += 3.0;
+    else 
+        evilY -= 3.0;
+  
+
+  // Keep the square within the bounds
+  if (evilY + 50 > canvas.height) {
+    evilY = canvas.height - 50;
+  }
+  if (evilY < 0) {
+    evilY = 0;
+  }
+  if (evilX < 0) {
+    evilX = 0;
+  }
+  if (evilX + 50 > canvas.width) {
+    evilX = canvas.width - 50;
+  }
+}
+
 // The main draw loop
 function draw() {
   erase();
+
+  badPlayerMove();
   // Move the square
   if (down) {
     y += speed;
@@ -154,6 +202,9 @@ function draw() {
   if (x + sideLength > canvas.width) {
     x = canvas.width - sideLength;
   }
+
+
+
   // Collide with the target
   if (isWithin(targetX, x, x + sideLength) || isWithin(targetX + targetLength, x, x + sideLength)) { // X
     if (isWithin(targetY, y, y + sideLength) || isWithin(targetY + targetLength, y, y + sideLength)) { // Y
@@ -163,18 +214,45 @@ function draw() {
       score++;
     }
   }
+
+  // Collides with moving bad square
+  if (isWithin(evilX, x, x + sideLength) || isWithin(evilX + 50, x, x + sideLength)) { // X
+    if (isWithin(evilY, y, y + sideLength) || isWithin(evilY + 50, y, y + sideLength)) { // Y
+      endGame();
+      killed = true;
+    }
+  }
+
+  if (isWithin(opponentX, x, x + sideLength) || isWithin(opponentX + targetLength, x, x + sideLength)) { // X
+    if (isWithin(opponentY, y, y + sideLength) || isWithin(opponentY + targetLength, y, y + sideLength)) { // Y
+      // Respawn the bad square
+      moveBadSquare();
+      // decreases the score
+      score--;
+    }
+  }
+
   // Draw the square
   context.fillStyle = '#FF0000';
   context.fillRect(x, y, sideLength, sideLength);
   // Draw the target 
   context.fillStyle = '#00FF00';
   context.fillRect(targetX, targetY, targetLength, targetLength);
+  // Draw bad square
+  context.fillStyle = '#2600ff';
+  context.fillRect(opponentX, opponentY, targetLength, targetLength);
+  // Draw MOVING evil sqUARE
+  context.fillStyle = '#71797E';
+  context.fillRect(evilX, evilY, 50, 50);
+
   // Draw the score and time remaining
   context.fillStyle = '#000000';
   context.font = '24px Arial';
   context.textAlign = 'left';
   context.fillText('Score: ' + score, 10, 24);
   context.fillText('Time Remaining: ' + countdown, 10, 50);
+
+  
   // End the game or keep playing
   if (countdown <= 0) {
     endGame();
@@ -188,3 +266,5 @@ menu();
 canvas.focus();
 
 </script>
+
+</html>
