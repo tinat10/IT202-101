@@ -12,3 +12,9 @@ if (is_logged_in()) {
 echo "<pre>" . var_export($_SESSION, true) . "</pre>";
 echo has_role('Admin');
 ?>
+
+<style>
+    h1{
+        color: blue;
+    }
+</style>
