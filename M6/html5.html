@@ -133,7 +133,7 @@ function endGame() {
     villainSpeed = 0;
 
 }
-
+// tkt November 21, 2023
 // Move the target square to a random position
 function moveTarget() {
   targetX = Math.round(Math.random() * canvas.width - targetLength);
@@ -154,6 +154,7 @@ function erase() {
 function badPlayerMove() {
     evilY += villainSpeed;
 
+    //tkt November 21
   // Keep the square within the bounds
   if (evilY + 50 > canvas.height) {
     evilY = 0;
@@ -220,7 +221,7 @@ function draw() {
       killed = true;
     }
   }
-
+// tkt November 21, 2023
   if (isWithin(opponentX, x, x + sideLength) || isWithin(opponentX + targetLength, x, x + sideLength)) { // X
     if (isWithin(opponentY, y, y + sideLength) || isWithin(opponentY + targetLength, y, y + sideLength)) { // Y
       // Respawn the bad square
