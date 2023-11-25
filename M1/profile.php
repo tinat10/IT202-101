@@ -15,19 +15,22 @@ if (isset($_POST["save"])) {
     try {
         $stmt->execute($params);
         flash("Profile saved", "success");
+        echo "Profile Succesfully Saved!";
     } catch (Exception $e) {
         if ($e->errorInfo[1] === 1062) {
             //https://www.php.net/manual/en/function.preg-match.php
             preg_match("/Users.(\w+)/", $e->errorInfo[2], $matches);
             if (isset($matches[1])) {
-                flash("The chosen " . $matches[1] . " is not available.", "warning");
+                //flash("The chosen " . $matches[1] . " is not available.", "warning");
             } else {
                 //TODO come up with a nice error message
-                echo "<pre>" . var_export($e->errorInfo, true) . "</pre>";
+                echo "Password Change Error. Be sure to provide the correct cureent password.";
+                //echo "<pre>" . var_export($e->errorInfo, true) . "</pre>";
             }
         } else {
             //TODO come up with a nice error message
-            echo "<pre>" . var_export($e->errorInfo, true) . "</pre>";
+            echo "Password Change Error.";
+            //echo "<pre>" . var_export($e->errorInfo, true) . "</pre>";
         }
     }
     //select fresh data from table
@@ -86,6 +89,12 @@ if (isset($_POST["save"])) {
 <?php
 $email = get_user_email();
 $username = get_username();
+
+if ($email == "")
+    $email= "SELECT email from Users where $username->:username"; 
+else if ($username == "")
+    $username= "SELECT username from Users where $email->:email"; 
+
 ?>
 <form method="POST" onsubmit="return validate(this);">
     <div class=subheaders>Login Information: </div>

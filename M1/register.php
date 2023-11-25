@@ -42,16 +42,23 @@ require(__DIR__ . "/partials/nav.php");
 
 <script>
 
-function validate(form) {
-    //TODO 1: implement JavaScript validation
-    //ensure it returns false for an error and true for success
-    console.log("$hasError = ", $hasError);
-    if ($hasError)
-        return false;
-        document.getElementById("username").value = $username;
-        document.getElementById("email").value = $email;
-    return true;
-}
+    function validate(form) {
+        //TODO 1: implement JavaScript validation
+        //ensure it returns false for an error and true for success
+
+        document.getElementById("username").innerHTML = 'tina';
+        document.getElementById("email").innerHTML = "thai";    
+        if ($hasError)
+            return false;
+        return true;
+
+        /*console.log("$hasError = ", $hasError);*/
+    }
+
+    function printStuff() {
+        document.getElementById("username").innerHTML = 'tina';
+        document.getElementById("email").innerHTML = "thai";  
+    }
 
 </script>
 <?php
@@ -128,8 +135,15 @@ if (isset($_POST["email"]) && isset($_POST["password"]) && isset($_POST["confirm
 
 
             echo "There was a problem registering.  Your username/email is already taken. ";
+            echo '<script type="text/javascript">',
+            'printStuff();',
+            '</script>';
             "<pre>" . var_export($e, true) . "</pre>";
         }
     }
 }
 ?>
+
+<script type="text/javascript">
+    printStuff();
+</script>
