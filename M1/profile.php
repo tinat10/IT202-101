@@ -88,6 +88,7 @@ $email = get_user_email();
 $username = get_username();
 ?>
 <form method="POST" onsubmit="return validate(this);">
+    <div class=subheaders>Login Information: </div>
     <div class="mb-3">
         <label for="email">Email</label>
         <input type="email" name="email" id="email" value="<?php se($email); ?>" />
@@ -97,7 +98,7 @@ $username = get_username();
         <input type="text" name="username" id="username" value="<?php se($username); ?>" />
     </div>
     <!-- DO NOT PRELOAD PASSWORD -->
-    <div>Password Reset</div>
+    <div class=subheaders>Password Reset: </div>
     <div class="mb-3">
         <label for="cp">Current Password</label>
         <input type="password" name="currentPassword" id="cp" />
@@ -110,8 +111,32 @@ $username = get_username();
         <label for="conp">Confirm Password</label>
         <input type="password" name="confirmPassword" id="conp" />
     </div>
-    <input type="submit" value="Update Profile" name="save" />
+    <input class=button type="submit" value="Update Profile" name="save" />
 </form>
+
+<style>
+    .subheaders {
+        font-family: cursive;
+        text-decoration: underline;
+    }
+    .mb-3 {
+        text-indent: 30px;
+    }
+    body {
+        background-color: lightcyan;
+    }
+    label {
+        font-family: cursive;
+        padding-right: 5px;
+    }
+    div {
+        padding: 5px;
+    }
+    .button {
+        margin-top: 10px;
+        font-family: cursive;
+    }
+</style>
 
 <script>
     function validate(form) {

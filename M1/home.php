@@ -14,7 +14,11 @@ echo has_role('Admin');
 ?>
 
 <style>
-    h1{
-        color: blue;
+    h1 {
+        font-family: cursive;
+    }
+
+    body {
+        background-color: lightcyan;
     }
 </style>

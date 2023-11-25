@@ -1,4 +1,10 @@
 <?php
+try {
+    if(!empty($_GET['status'])){
+        echo '<div>You have been logged out!</div>';
+    }
+} catch(Exception $e) {}
+
 require(__DIR__ . "/partials/nav.php");
 ?>
 <form onsubmit="return validate(this)" method="POST">
@@ -10,7 +16,24 @@ require(__DIR__ . "/partials/nav.php");
         <label for="pw">Password</label>
         <input type="password" id="pw" name="password" required minlength="8" />
     </div>
-    <input type="submit" value="Login" />
+    <input class=button type="submit" value="Login" />
+
+    <style>
+        body {
+            background-color: lightcyan;
+        }
+        label {
+            font-family: cursive;
+            padding-right: 5px;
+        }
+        div {
+            padding: 5px;
+        }
+        .button {
+            margin-top: 10px;
+            font-family: cursive;
+        }
+    </style>
 </form>
 <script>
     function validate(form) {

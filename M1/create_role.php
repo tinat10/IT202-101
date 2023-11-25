@@ -35,12 +35,35 @@ if (isset($_POST["name"]) && isset($_POST["description"])) {
         <label for="name">Name</label>
         <input id="name" name="name" required />
     </div>
-    <div>
+    <div class=description>
         <label for="d">Description</label>
         <textarea name="description" id="d"></textarea>
     </div>
-    <input type="submit" value="Create Role" />
+    <input class=button type="submit" value="Create Role" />
 </form>
+
+    <style>
+        h1 {
+            font-family: cursive;
+        }
+
+        .description {
+            margin-top: 10px;
+        }
+
+        body {
+            background-color: lightcyan;
+        }
+
+        label {
+            font-family: cursive;
+            padding-right: 5px;
+        }
+        .button {
+            margin-top: 10px;
+            font-family: cursive;
+        }
+    </style>
 <?php
 //note we need to go up 1 more directory
 ?>

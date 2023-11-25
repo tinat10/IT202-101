@@ -18,8 +18,27 @@ require(__DIR__ . "/partials/nav.php");
         <label for="confirm">Confirm</label>
         <input type="password" name="confirm" required minlength="8" />
     </div>
-    <input type="submit" value="Register" />
+    <input class=button type="submit" value="Register" />
 </form>
+
+<style>
+        body {
+            background-color: lightcyan;
+        }
+        label {
+            font-family: cursive;
+            padding-right: 5px;
+        }
+
+        div {
+            padding: 5px;
+        }
+        
+        .button {
+            margin-top: 10px;
+            font-family: cursive;
+        }
+    </style>
 <script>
     function validate(form) {
         //TODO 1: implement JavaScript validation
@@ -34,7 +53,7 @@ if (isset($_POST["email"]) && isset($_POST["password"]) && isset($_POST["confirm
     $email = se($_POST, "email", "", false);
     $password = se($_POST, "password", "", false);
     $username = se($_POST, "username", "", false);
-    echo $username;
+    //echo $username;
     $confirm = se(
         $_POST,
         "confirm",
@@ -73,15 +92,31 @@ if (isset($_POST["email"]) && isset($_POST["password"]) && isset($_POST["confirm
         $hasError = true;
     }
     if (!$hasError) {
-        echo "Welcome, $email";
         //TODO 4
         $hash = password_hash($password, PASSWORD_BCRYPT);
         $db = getDB();
         $stmt = $db->prepare("INSERT INTO Users (email, password, username) VALUES(:email, :password, :username)");
         try {
             $stmt->execute([":email" => $email, ":password" => $hash, ":username" => $username]);
-            echo "Successfully registered!";
+            
+            echo "Welcome, $email,.  Successfully registered!";
         } catch (Exception $e) {
+            $sql_username = "SELECT username FROM Users WHERE username = '$username'";
+            $sql_email = "SELECT email FROM Users WHERE email = '$email'";
+
+            $userSQL = mysqli_query($db, $sql_username);
+            $emailSQL  = mysqli_query($db, $sql_email);
+
+            $rowNums  = $userSQL->num_rows;
+            if ($rowNums > 0) {
+                echo "Sorry, that username is already taken.";
+            }
+
+            $rowNums  = $emailSQL->num_rows;
+            if ($rowNums> 0) {
+                echo "Sorry, that email is already taken";
+            }
+
             echo "There was a problem registering";
             "<pre>" . var_export($e, true) . "</pre>";
         }

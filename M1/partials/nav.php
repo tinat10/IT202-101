@@ -25,20 +25,135 @@ require_once(__DIR__ . "/../lib/functions.php");
 <nav>
     <ul>
         <?php if (is_logged_in()) : ?>
-            <li><a href="home.php">Home</a></li>
-            <li><a href="profile.php">Profile</a></li>
-            <li><a href="create_role.php">Create Role</a></li>
+            <html>
+                <div class = "navBar">
+                    <li><a href="home.php">Home</a></li>
+                    <li><a href="profile.php">Profile</a></li>
+                    <li><a href="create_role.php">Create Role</a></li>
+                </div>
+                <style>
+                    li {
+                        display: inline-block;
+                    }
+
+                    .navBar {
+                        background-color: #FFE5B4;
+                        padding: 5px
+                    }
+
+                    .navBar a {
+                        color: #0000FF;
+                        text-align: center;
+                        text-align: center;
+                        padding-right: 20px
+                    }
+
+                    .navBar a:hover {
+                        color: red;
+                        text-decoration: underline;
+
+                    }
+
+                </style>
+            </html>
             <?php endif; ?>
         <?php if (!is_logged_in()) : ?>
-            <li><a href="login.php">Login</a></li>
-            <li><a href="register.php">Register</a></li>
+            <html>
+                <div class = "navBar">
+                    <li><a class="loginLink" href="login.php">Login</a></li>
+                    <li><a class="registerLink" href="register.php">Register</a></li>
+                </div>
+                <style>
+                    li {
+                        display: inline-block;
+                    }
+
+                    .navBar {
+                        background-color: #FFE5B4;
+                        padding: 5px
+                    }
+
+                    .navBar a {
+                        color: #0000FF;
+                        text-align: center;
+                        text-align: center;
+                        padding-right: 20px
+
+                    }
+
+                    .navBar a:hover {
+                        color: red;
+                        text-decoration: underline;
+
+                    }
+
+                </style>
+            </html>
         <?php endif; ?>
         <?php if (has_role('Admin')) : ?>
-            <li><a href="list_roles.php">Roles List</a></li>
-            <li><a href="create_role.php">Create Role</a></li>
+            <html>
+                <div class = "navBar">
+                    <li><a href="list_roles.php">Roles List</a></li>
+                    <li><a href="create_role.php">Create Role</a></li>
+                </div>
+                <style>
+                    li {
+                        display: inline-block;
+                    }
+
+                    .navBar {
+                        background-color: #FFE5B4;
+                        padding: 5px
+
+                    }
+
+                    .navBar a {
+                        color: #0000FF;
+                        text-align: center;
+                        text-align: center;
+                        padding-right: 20px
+
+                    }
+
+                    .navBar a:hover {
+                        color: red;
+                        text-decoration: underline;
+                    }
+
+                </style>
+            </html>
         <?php endif; ?>
         <?php if (is_logged_in()) : ?>
-            <li><a href="logout.php">Logout</a></li>
+            <html>
+                <div class = "navBar">
+                    <li><a href="logout.php">Logout</a></li>
+                </div>
+                <style>
+                    li {
+                        display: inline-block;
+                    }
+
+                    .navBar {
+                        background-color: #FFE5B4;
+                        padding: 5px
+                    }
+
+                    .navBar a {
+                        color: #0000FF;
+                        text-align: center;
+                        text-align: center;
+                        padding-right: 20px
+
+                    }
+
+                    .navBar a:hover {
+                        color: red;
+                        text-decoration: underline;
+
+                    }
+
+                </style>
+            </html>
         <?php endif; ?>
     </ul>
 </nav>
