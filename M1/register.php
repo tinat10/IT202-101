@@ -1,14 +1,14 @@
 <?php
 require(__DIR__ . "/partials/nav.php");
 ?>
-<form onsubmit="return validate(this)" method="POST">
+<form id=registration onsubmit="return validate(this)" method="POST">
     <div>
         <label for="email">Email</label>
-        <input type="email" name="email" required />
+        <input id=email type="email" name="email" required />
     </div>
     <div>
         <label for="username">Username</label>
-        <input type="text" name="username" required />
+        <input id=username type="text" name="username" required />
     </div>
     <div>
         <label for="pw">Password</label>
@@ -39,13 +39,20 @@ require(__DIR__ . "/partials/nav.php");
             font-family: cursive;
         }
     </style>
-<script>
-    function validate(form) {
-        //TODO 1: implement JavaScript validation
-        //ensure it returns false for an error and true for success
 
-        return true;
-    }
+<script>
+
+function validate(form) {
+    //TODO 1: implement JavaScript validation
+    //ensure it returns false for an error and true for success
+    console.log("$hasError = ", $hasError);
+    if ($hasError)
+        return false;
+        document.getElementById("username").value = $username;
+        document.getElementById("email").value = $email;
+    return true;
+}
+
 </script>
 <?php
 //TODO 2: add PHP Code
@@ -101,6 +108,8 @@ if (isset($_POST["email"]) && isset($_POST["password"]) && isset($_POST["confirm
             
             echo "Welcome, $email,.  Successfully registered!";
         } catch (Exception $e) {
+
+            /*
             $sql_username = "SELECT username FROM Users WHERE username = '$username'";
             $sql_email = "SELECT email FROM Users WHERE email = '$email'";
 
@@ -115,9 +124,10 @@ if (isset($_POST["email"]) && isset($_POST["password"]) && isset($_POST["confirm
             $rowNums  = $emailSQL->num_rows;
             if ($rowNums> 0) {
                 echo "Sorry, that email is already taken";
-            }
+            }*/
 
-            echo "There was a problem registering";
+
+            echo "There was a problem registering.  Your username/email is already taken. ";
             "<pre>" . var_export($e, true) . "</pre>";
         }
     }
