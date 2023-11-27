@@ -15,19 +15,22 @@ if (isset($_POST["save"])) {
     try {
         $stmt->execute($params);
         flash("Profile saved", "success");
+        echo "Profile Succesfully Saved!";
     } catch (Exception $e) {
         if ($e->errorInfo[1] === 1062) {
             //https://www.php.net/manual/en/function.preg-match.php
             preg_match("/Users.(\w+)/", $e->errorInfo[2], $matches);
             if (isset($matches[1])) {
-                flash("The chosen " . $matches[1] . " is not available.", "warning");
+                //flash("The chosen " . $matches[1] . " is not available.", "warning");
             } else {
                 //TODO come up with a nice error message
-                echo "<pre>" . var_export($e->errorInfo, true) . "</pre>";
+                echo "Password Change Error. Be sure to provide the correct cureent password.";
+                //echo "<pre>" . var_export($e->errorInfo, true) . "</pre>";
             }
         } else {
             //TODO come up with a nice error message
-            echo "<pre>" . var_export($e->errorInfo, true) . "</pre>";
+            echo "Password Change Error.";
+            //echo "<pre>" . var_export($e->errorInfo, true) . "</pre>";
         }
     }
     //select fresh data from table
@@ -86,8 +89,15 @@ if (isset($_POST["save"])) {
 <?php
 $email = get_user_email();
 $username = get_username();
+
+/*if ($email == "")
+    $email= mysql_query("SELECT email from Users where $username->:username"); 
+else if ($username == "")
+    $username= mysql_query("SELECT username from Users where $email->:email"); */
+
 ?>
 <form method="POST" onsubmit="return validate(this);">
+    <div class=subheaders>Login Information: </div>
     <div class="mb-3">
         <label for="email">Email</label>
         <input type="email" name="email" id="email" value="<?php se($email); ?>" />
@@ -97,7 +107,7 @@ $username = get_username();
         <input type="text" name="username" id="username" value="<?php se($username); ?>" />
     </div>
     <!-- DO NOT PRELOAD PASSWORD -->
-    <div>Password Reset</div>
+    <div class=subheaders>Password Reset: </div>
     <div class="mb-3">
         <label for="cp">Current Password</label>
         <input type="password" name="currentPassword" id="cp" />
@@ -110,8 +120,32 @@ $username = get_username();
         <label for="conp">Confirm Password</label>
         <input type="password" name="confirmPassword" id="conp" />
     </div>
-    <input type="submit" value="Update Profile" name="save" />
+    <input class=button type="submit" value="Update Profile" name="save" />
 </form>
+
+<style>
+    .subheaders {
+        font-family: cursive;
+        text-decoration: underline;
+    }
+    .mb-3 {
+        text-indent: 30px;
+    }
+    body {
+        background-color: lightcyan;
+    }
+    label {
+        font-family: cursive;
+        padding-right: 5px;
+    }
+    div {
+        padding: 5px;
+    }
+    .button {
+        margin-top: 10px;
+        font-family: cursive;
+    }
+</style>
 
 <script>
     function validate(form) {
