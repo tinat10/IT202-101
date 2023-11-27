@@ -8,23 +8,24 @@ if (!has_role("Admin")) {
     echo ("You don't have permission to view this page");
     //die(header("Location: " . get_url("home.php")));
 }
-
-if (isset($_POST["name"]) && isset($_POST["description"])) {
-    $name = se($_POST, "name", "", false);
-    $desc = se($_POST, "description", "", false);
-    if (empty($name)) {
-        //flash("Name is required", "warning");
-    } else {
-        $db = getDB();
-        $stmt = $db->prepare("INSERT INTO Roles (name, description, is_active) VALUES(:name, :desc, 1)");
-        try {
-            $stmt->execute([":name" => $name, ":desc" => $desc]);
-            //flash("Successfully created role $name!", "success");
-        } catch (PDOException $e) {
-            if ($e->errorInfo[1] === 1062) {
-                //flash("A role with this name already exists, please try another", "warning");
-            } else {
-                //flash(var_export($e->errorInfo, true), "danger");
+else {
+    if (isset($_POST["name"]) && isset($_POST["description"])) {
+        $name = se($_POST, "name", "", false);
+        $desc = se($_POST, "description", "", false);
+        if (empty($name)) {
+            //flash("Name is required", "warning");
+        } else {
+            $db = getDB();
+            $stmt = $db->prepare("INSERT INTO Roles (name, description, is_active) VALUES(:name, :desc, 1)");
+            try {
+                $stmt->execute([":name" => $name, ":desc" => $desc]);
+                //flash("Successfully created role $name!", "success");
+            } catch (PDOException $e) {
+                if ($e->errorInfo[1] === 1062) {
+                    //flash("A role with this name already exists, please try another", "warning");
+                } else {
+                    //flash(var_export($e->errorInfo, true), "danger");
+                }
             }
         }
     }
@@ -65,6 +66,7 @@ if (isset($_POST["name"]) && isset($_POST["description"])) {
             font-family: cursive;
         }
     </style>
+    
 <?php
 //note we need to go up 1 more directory
 ?>
