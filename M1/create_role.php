@@ -5,6 +5,7 @@ require(__DIR__ . "/partials/nav.php");
 
 if (!has_role("Admin")) {
     flash("You don't have permission to view this page", "warning");
+    echo ("You don't have permission to view this page");
     //die(header("Location: " . get_url("home.php")));
 }
 
