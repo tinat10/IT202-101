@@ -90,10 +90,10 @@ if (isset($_POST["save"])) {
 $email = get_user_email();
 $username = get_username();
 
-if ($email == "")
-    $email= "SELECT email from Users where $username->:username"; 
+/*if ($email == "")
+    $email= mysql_query("SELECT email from Users where $username->:username"); 
 else if ($username == "")
-    $username= "SELECT username from Users where $email->:email"; 
+    $username= mysql_query("SELECT username from Users where $email->:email"); */
 
 ?>
 <form method="POST" onsubmit="return validate(this);">
