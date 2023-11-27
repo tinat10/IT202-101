@@ -46,8 +46,8 @@ require(__DIR__ . "/partials/nav.php");
         //TODO 1: implement JavaScript validation
         //ensure it returns false for an error and true for success
 
-        document.getElementById("username").innerHTML = 'tina';
-        document.getElementById("email").innerHTML = "thai";    
+        document.getElementById("username").innerHTML = $username;
+        document.getElementById("email").innerHTML = $email;    
         if ($hasError)
             return false;
         return true;
@@ -56,8 +56,8 @@ require(__DIR__ . "/partials/nav.php");
     }
 
     function printStuff() {
-        document.getElementById("username").innerHTML = 'tina';
-        document.getElementById("email").innerHTML = "thai";  
+        document.getElementById("username").innerHTML = $username;
+        document.getElementById("email").innerHTML = $email; 
     }
 
 </script>
