@@ -9,8 +9,20 @@ if (is_logged_in()) {
     echo has_role('Admin');
 } else {
     echo "You're not logged in";
-}
-//shows session info
+} //shows session info
+
+$db = getDB();
+        $stmt = $db->prepare("SELECT * from M1_Roles where id = 1");
+        try {
+        $r = $stmt->execute([":email" => $email]);
+        if ($r) {
+            $user = $stmt->fetch(PDO::FETCH_ASSOC);
+            var_export($user,true);
+        }
+    } catch (Exception $e) {
+        echo "<pre>" . var_export($e, true) . "</pre>";
+    }
+
 
 ?>
 
