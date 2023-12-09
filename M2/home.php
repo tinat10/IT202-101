@@ -7,6 +7,27 @@ if (is_logged_in()) {
     echo "Welcome, " . get_username();
     echo "<pre>" . var_export($_SESSION, true) . "</pre>";
     echo has_role('Admin');
+
+
+    if (has_role('Admin')) { ?>
+
+        <html>
+            
+
+        </html>
+        
+    <?php }
+    else { ?>
+        <style>
+        h1 {
+            font-family: cursive;
+        }
+    
+        body {
+            background-color: lightcyan;
+        }
+        </style>
+    <?php }
 } else {
     echo "You're not logged in";
 } //shows session info
@@ -25,13 +46,3 @@ $db = getDB();
 
 
 ?>
-
-<style>
-    h1 {
-        font-family: cursive;
-    }
-
-    body {
-        background-color: lightcyan;
-    }
-</style>

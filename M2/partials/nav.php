@@ -29,6 +29,7 @@ require_once(__DIR__ . "/../lib/functions.php");
                 <div class = "navBar">
                     <li><a href="home.php">Home</a></li>
                     <li><a href="profile.php">Profile</a></li>
+                    <li><a href="shop.php">Shop</a></li>
                     <!--<li><a href="create_role.php">Create Role</a></li>-->
                 </div>
                 <style>
