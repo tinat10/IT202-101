@@ -12,7 +12,7 @@ if (is_logged_in()) {
     if (has_role('Admin')) { ?>
 
         <html>
-            
+            <h1>Product Inventory</h1>
 
         </html>
         
