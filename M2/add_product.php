@@ -22,7 +22,7 @@ else { ?>
         } 
         else {
             $db = getDB();
-            $stmt = $db->prepare("INSERT INTO Products VALUES(:name, :desc, :categ, :stock, :price, 1)");
+            $stmt = $db->prepare("INSERT INTO Products (name, description, category, stock, unit_price, visibiliy) VALUES(:name, :desc, :categ, :stock, :price, 1)");
             try {
                 $stmt->execute([":name" => $name, ":desc" => $desc, "category" => $categ, "stock" => $stock, "unit_price" => $price]);
                 //flash("Successfully created role $name!", "success");
