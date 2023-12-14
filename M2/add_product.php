@@ -17,16 +17,16 @@ else { ?>
         $categ = se($_POST, "category", "", false);
         $stock = se($_POST, "stock", "", false);
         $price = se($_POST, "price", "", false);
-        if (empty($name)) {
-            //flash("Name is required", "warning");
-        } 
-        else {
+        
             $db = getDB();
-            $stmt = $db->prepare("INSERT INTO Products (name, description, category, stock, unit_price, visibiliy) VALUES(:name, :desc, :categ, :stock, :price, 1)");
+            $stmt = $db->prepare("INSERT INTO Products (name, description, category, stock, unit_price) VALUES(:name, :desc, :categ, :stock, :price)");
             try {
-                $stmt->execute([":name" => $name, ":desc" => $desc, "category" => $categ, "stock" => $stock, "unit_price" => $price]);
+                $stmt->execute([":name" => $name, ":description" => $desc, "category" => $categ, "stock" => $stock, "unit_price" => $price]);
                 //flash("Successfully created role $name!", "success");
+                echo "success";
             } catch (PDOException $e) {
+                echo "haha suck ass. it didn't work.";
+                echo $e;
                 if ($e->errorInfo[1] === 1062) {
                     //flash("A role with this name already exists, please try another", "warning");
                 } else {
@@ -34,7 +34,7 @@ else { ?>
                 }
             }
         }
-    }
+    
 //}
 ?>
 
