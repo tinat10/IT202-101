@@ -72,7 +72,7 @@
                     echo 'Name: <a href="item.php?product_id=' . $item['id'] . '">' . $item['name'] . '</a><br>';
                     //echo "Description: " . $item['description'] . "<br>";
                     //echo "Category: " . $item['category'] . "<br>";
-                    echo "Stock: $" . $item['stock'] . "<br>";
+                    echo "Stock: " . $item['stock'] . "<br>";
                     echo "Unit Price: $" . $item['unit_price'] . "<br>";
                     echo "Visibility: TRUE <br></div><br>";    
                     

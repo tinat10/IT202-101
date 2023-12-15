@@ -63,6 +63,7 @@ require_once(__DIR__ . "/../lib/functions.php");
                 <div class = "navBar">
                     <li><a class="loginLink" href="login.php">Login</a></li>
                     <li><a class="registerLink" href="register.php">Register</a></li>
+                    <li><a href="shop.php">Shop</a></li>
                 </div>
                 <style>
                     li {

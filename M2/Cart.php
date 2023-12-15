@@ -5,14 +5,29 @@
     $db = getDB();
     try {
 
-        $sql = 'SELECT * FROM Products';
+        $sql = 'SELECT id, product_id, desired_quantity, unit_price FROM Cart';
+        $sql2 = 'SELECT id, name, description FROM Products';
         $stmt = $db -> prepare($sql);
         $stmt -> execute();
 
         $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $count = 0;
-        if ($stmt -> rowCount()>0) {}
+        if ($stmt -> rowCount()>0) {
+            foreach ($products as $item) {
+                /*echo '<div class="items">';
+                echo '<h1 class="name">' . $item['name'] . '</h1>';
+                echo '<h3 class="description">' . $item['description'] . '</h3>';
+                echo '<div class="quant">';
+                echo '<div class="quantButton" onclick="updateQuantity(' . $row['id'] . ', -1)">-</div>';
+                echo '<h3 class="quantity" id="quantity_' . $row['id'] . '">1</h3>';
+                echo '<div class="quantButton" onclick="updateQuantity(' . $row['id'] . ', 1)">+</div>';
+                echo '</div>';
+                echo '<h3 class="price">$' . number_format($item['price'], 2) . '</h3>';
+                echo '<h3 class="removeItem" onclick="removeItem(' . $item['id'] . ')">Remove</h3>';
+                echo '</div>';//*/
+            }
 
+        }
+ 
     } catch (Exception $e) {
         echo $e;
     }
@@ -28,34 +43,20 @@
             </div>
 
             <div class="items">
-                <h1 class="name">Item Name</h1>
+                <h1 class="name" href="item.php?product_id=' . $item['id'] . '">Item Name</h1>
                 <h3 class="description">description here</h3>
                 <div class = "quant">
-                    <div class="quantButton">-</div>
-                    <h3 class="quantity">0</h3>
-                    <div class="quantButton">+</div>
+                    <div class="quantButton" onclick="updateQuantity($row['id'], -1)">-</div>
+                    <h3 class="quantity" id="quantity_' . $row['id'] . '">1</h3>
+                    <div class="quantButton" onclick="updateQuantity($row['id'], 1)">+</div>
                 </div>
-                <h3 class="price">$0.00</h3>
+
+                <h3 class="price">$0.00 / each</h3>
                 <h3 class="removeItem">Remove</h3>
 
             </div>
 
-            <div class="items">
-                <h1 class="name">Item Name</h1>
-                <h3 class="description">description here</h3>
-                <div class = "quant">
-                    <div class="quantButton">-</div>
-                    <h3 class="quantity">0</h3>
-                    <div class="quantButton">+</div>
-                </div>
-                <h3 class="price">$0.00</h3>
-                <h3 class="removeItem">Remove</h3>
-
-            </div>
-
-            <div>
-
-            </div>
+            <div></div>
 
             <hr> 
             <div class="checkout">
@@ -74,6 +75,30 @@
     
 
 </html>
+
+<script>
+
+
+    function updateQuantity(productId, value) {
+        var quantityElement = document.getElementById('quantity_' + productId);
+        var currentQuantity = parseInt(quantityElement.innerText);
+
+        if (quantity+value <= 0)
+            quantity += value;
+        quantityElement.innerText = quantity;
+
+        if (newQuantity === 0) {
+            removeItem(productId);
+        }
+    }
+
+    function removeItem(productID) {
+        var item = document.querySelector('.items[data-product-id="' + productId + '"]');
+        if (itemElement) {
+            itemElement.remove();
+        }
+    }
+</script>
 
 <style>
 
