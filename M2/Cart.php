@@ -1,7 +1,22 @@
 <?php 
-    /*if (is_logged_in()) {
-        require_once(__DIR__ . "/partials/nav.php");
-    }//*/
+    require_once(__DIR__ . "/partials/nav.php");
+
+    
+    $db = getDB();
+    try {
+
+        $sql = 'SELECT * FROM Products';
+        $stmt = $db -> prepare($sql);
+        $stmt -> execute();
+
+        $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $count = 0;
+        if ($stmt -> rowCount()>0) {}
+
+    } catch (Exception $e) {
+        echo $e;
+    }
+
 ?>
 
 <html>

@@ -1,37 +1,5 @@
 <?php 
-    require_once(__DIR__ . "/partials/nav.php");
-
-    $db = getDB();
-    try {
-
-        $sql = 'SELECT * FROM Products';
-        $stmt = $db -> prepare($sql);
-        $stmt -> execute();
-
-        $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        if ($stmt -> rowCount()>0) {
-            echo "<h1>Products<h1><br><br>";
-            foreach ($products as $item) {
-                if ($item['visibility'] == 1) {
-                    echo "<li>";
-                    echo "Product ID: " . $item['id'] . "<br>"; 
-                    echo 'Name: <a href="item.php?product_id=' . $item['id'] . '">' . $item['name'] . '</a><br>';
-                    //echo "Name: " . $item['name'] . "<br>";
-                    echo "Description: " . $item['description'] . "<br>";
-                    echo "Category: " . $item['category'] . "<br>";
-                    echo "Stock: $" . $item['stock'] . "<br>";
-                    echo "Unit Price: $" . $item['unit_price'] . "<br>";
-                    echo "Visibility: TRUE <br>";                
-                }
-
- 
-            }
-        }
-    } catch (Exception $e) {}
-
-?>
-
+    require_once(__DIR__ . "/partials/nav.php"); ?>
 <html>
     <div class = "navBar">
         <h1>Shop</h1>
@@ -82,4 +50,40 @@
 </style>
 
 </html>
+
+
+<?php
+
+    $db = getDB();
+    try {
+
+        $sql = 'SELECT * FROM Products';
+        $stmt = $db -> prepare($sql);
+        $stmt -> execute();
+
+        $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $count = 0;
+        if ($stmt -> rowCount()>0) {
+            echo "<h1>Products<h1><br><br>";
+            foreach ($products as $item) {
+                if ($item['visibility'] == 1 && $count < 10) {
+                    echo "<div><li>";
+                    echo "Product ID: " . $item['id'] . "<br>"; 
+                    echo 'Name: <a href="item.php?product_id=' . $item['id'] . '">' . $item['name'] . '</a><br>';
+                    //echo "Description: " . $item['description'] . "<br>";
+                    //echo "Category: " . $item['category'] . "<br>";
+                    echo "Stock: $" . $item['stock'] . "<br>";
+                    echo "Unit Price: $" . $item['unit_price'] . "<br>";
+                    echo "Visibility: TRUE <br></div><br>";    
+                    
+                    $count++;
+                }
+
+ 
+            }
+        }
+    } catch (Exception $e) {}
+
+?>
+
 

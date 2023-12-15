@@ -39,76 +39,20 @@ try {
 ?>
 
 <html>
-    <div class="product-details">
-            <img src="product-image.jpg" alt="Product Image">
-            <h2>Product Name</h2>
-            <p>Description of the product goes here. It can be a detailed overview of the features and benefits of the product.</p>
-            <p class="product-details-price">Price: $0.00</p>
-        </div>
-
-        <div class="go-back">
-            <a href="#">Go Back to Product List</a>
-        </div>
+    <div class="go-back">
+        <a href="../shop.php">Go Back to Product List</a>
+    </div>
     <style> 
-        body {
-            font-family: 'monospace';
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-        }
-
-        header {
-            background-color: #333;
-            color: #fff;
-            padding: 10px;
-            text-align: center;
-        }
-
-        main {
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 20px;
-            background-color: #fff;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .product-details {
-            border: 1px solid #ddd;
-            padding: 20px;
-            overflow: hidden;
-        }
-
-        .product-details img {
-            max-width: 100%;
-            height: auto;
-            border-bottom: 1px solid #ddd;
-            margin-bottom: 20px;
-        }
-
-        .product-details h2 {
-            font-size: 1.5em;
-            color: #333;
-        }
-
-        .product-details p {
-            color: #666;
-            line-height: 1.6;
-        }
-
-        .product-details-price {
-            color: #c00;
-            font-weight: bold;
-        }
 
         .go-back {
-            margin-top: 20px;
+            margin-top: 40px;
             text-align: center;
         }
 
         .go-back a {
             text-decoration: none;
             color: #333;
-            padding: 10px 20px;
+            padding: 5px 10px;
             background-color: #ddd;
             border-radius: 4px;
         }
