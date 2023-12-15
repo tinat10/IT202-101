@@ -16,12 +16,12 @@ else { ?>
         $desc = se($_POST, "description", "", false);
         $categ = se($_POST, "category", "", false);
         $stock = se($_POST, "stock", "", false);
-        $price = se($_POST, "price", "", false);
+        $price = se($_POST, "unit_price", "", false);
         
             $db = getDB();
             $stmt = $db->prepare("INSERT INTO Products (name, description, category, stock, unit_price) VALUES(:name, :desc, :categ, :stock, :price)");
             try {
-                $stmt->execute([":name" => $name, ":description" => $desc, "category" => $categ, "stock" => $stock, "unit_price" => $price]);
+                $stmt->execute([":name" => $name, ":desc" => $desc, ":categ" => $categ, ":stock" => (int)$stock, ":price" => (float)$price]);
                 //flash("Successfully created role $name!", "success");
                 echo "success";
             } catch (PDOException $e) {

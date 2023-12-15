@@ -1,7 +1,6 @@
 <?php 
     require_once(__DIR__ . "/partials/nav.php");
 
-    
     $db = getDB();
     try {
 
@@ -161,7 +160,7 @@
 
     body {
         background-color: lightcyan;
-        display: flex;
+        display: block;
         justify-content: center;
         align-items: center;
 
@@ -227,6 +226,7 @@
     }
 
     .container {
+
         width: 70%;
         height: 70%;
         background-color: #ffffff;

@@ -64,42 +64,44 @@ try {
 
         <?php 
         }
-
         if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_to_cart'])) { 
 
             if (!is_logged_in()) {
                 header('Location: login.php');
+                echo "did not reach";
             }
             else {
-                $stmt2 = $db->prepare("INSERT INTO Cart  (product_id, user_id, desired_quantity, unit_price) VALUES(:product_id, :user_id, 1, :user_price)");
-                $stmt2->execute([":product_id" => $item['id'], ":user+id" => get_user_id(), "desired_quantity" => 1, ":unit_price" => $item['unit_price']]);
-            }
-        
-            $name = se($_POST, "name", "", false);
-            $desc = se($_POST, "description", "", false);
-            $categ = se($_POST, "category", "", false);
-            $stock = se($_POST, "stock", "", false);
-            $price = se($_POST, "price", "", false);
-        
-            if ($conn->query($sql2) === TRUE) {
-                echo "Item added to cart successfully.";
-            } else {
-                echo "Error: " . $sql2 . "<br>" . $conn->error;
+                $product_id = $item['id'];
+                $user_id = get_user_id();
+                $desired_quantity = 1;
+                $unit_price = $item['unit_price'];
+
+                echo "here". $product_id . $user_id . $desired_quantity . $unit_price;
+
+                $stmt2 = $db->prepare("INSERT INTO Cart  (product_id, user_id, desired_quantity, unit_price) VALUES(:product_id, :user_id, :desired_quantity, :unit_price)");
+                $stmt2->execute([":product_id" => $product_id, ":user_id" => $user_id, ":desired_quantity" => $desired_quantity, ":unit_price" => $unit_price]);
+                
             }
         }
 
 
     }
-} catch (Exception $e) {}
+} catch (Exception $e) {
+    echo "haha suck ass. it didn't work.";
+    echo "Error: " . $e->getMessage();
+
+}
 
 
 ?>
 
 <html>
 
-    <div class="add_to_cart">
-        <a href="../cart.php" onclick="addToCart()">Add to Cart</a>
-    </div>
+    <form id='form' method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+        <div class="add_to_cart">
+            <input type="submit" name="add_to_cart" value="Add to Cart">
+        </div>
+    </form>
 
     <div class="go-back">
         <a href="../shop.php">Go Back to Product List</a>
@@ -118,10 +120,6 @@ try {
             padding: 5px 10px;
             background-color: #ddd;
             border-radius: 4px;
-        }
-
-        .add_to_cart:hover {
-            background-color: #ccc;
         }
 
         .go-back {
@@ -144,8 +142,18 @@ try {
 
     <script>
         function addToCart() {
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST", "process.php", true);
+            var formData = new FormData(document.querySelector('form'));
+
+            fetch('process.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(data => {
+                console.log(data); // Log the response from the server
+                // You can add additional logic here based on the response
+            })
+            .catch(error => console.error('Error:', error));
         }
     </script>
 

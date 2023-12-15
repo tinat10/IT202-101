@@ -1,6 +1,11 @@
 <?php
 //note we need to go up 1 more directory
 require(__DIR__ . "/partials/nav.php");
+try {
+    if(!empty($_GET['product_id'])){
+        $itemNum = $_GET['product_id'];
+    }
+} catch(Exception $e) {}
 //require_once(__DIR__ . "/partials/flash.php");
 
 /*if (!has_role("Admin")) {
@@ -11,31 +16,41 @@ require(__DIR__ . "/partials/nav.php");
 else { ?>
 
 <?php*/
-    if (isset($_POST["name"]) && isset($_POST["description"]) && isset($_POST["category"]) && isset($_POST["stock"]) &&isset($_POST["unit_price"])) {
+    $db = getDB();
+    $sql = 'SELECT * FROM Products';
+    $stmt = $db -> prepare($sql);
+    $stmt -> execute();
+
+    $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    if ($stmt -> rowCount()>0) {
+        $item = ($products[$itemNum-1]);
+    }
+
+
+    if (isset($_POST["name"]) && isset($_POST["description"]) && isset($_POST["category"]) && isset($_POST["stock"]) && isset($_POST["unit_price"])) {
         $name = se($_POST, "name", "", false);
         $desc = se($_POST, "description", "", false);
         $categ = se($_POST, "category", "", false);
         $stock = se($_POST, "stock", "", false);
-        $price = se($_POST, "price", "", false);
-        
-            $db = getDB();
-            $params = [":name" => $name];
-            //$stmt = $db->prepare("UPDATE Users set email = :email, username = :username where id = :id");
-            $stmt = $db->prepare("UPDATE Products (name, description, category, stock, unit_price) set (:name, :desc, :categ, :stock, :price)");
-            try {
-                $stmt->execute([":name" => $name, ":description" => $desc, "category" => $categ, "stock" => $stock, "unit_price" => $price]);
-                //flash("Successfully created role $name!", "success");
-                echo "success";
-            } catch (PDOException $e) {
-                echo "haha suck ass. it didn't work.";
-                echo $e;
-                if ($e->errorInfo[1] === 1062) {
-                    //flash("A role with this name already exists, please try another", "warning");
-                } else {
-                    //flash(var_export($e->errorInfo, true), "danger");
-                }
+        $price = se($_POST, "unit_price", "", false);
+        $product_id =  $item['id'];    
+
+        $stmt = $db->prepare("UPDATE Products SET name = :name, description = :desc, category = :categ, stock = :stock, unit_price = :price WHERE id = :product_id");
+        try {
+            $stmt->execute([":name" => $name, ":desc" => $desc, ":categ" => $categ, ":stock" => (int)$stock, ":price" => (float)$price, ":product_id" => $product_id]);
+            //flash("Successfully created role $name!", "success");
+            echo "success";
+        } catch (PDOException $e) {
+            echo "haha suck ass. it didn't work.";
+            echo $e;
+            if ($e->errorInfo[1] === 1062) {
+                //flash("A role with this name already exists, please try another", "warning");
+            } else {
+                //flash(var_export($e->errorInfo, true), "danger");
             }
         }
+    }
     
 //}
 ?>
@@ -64,7 +79,7 @@ else { ?>
         <textarea name="description" id="d"></textarea>
     </div>
     
-    <input class=button type="submit" value="Add Product" />
+    <input class=button type="submit" value="Save Product Info" />
 </form>
 
     <style>
