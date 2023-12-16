@@ -3,60 +3,49 @@
 
     $db = getDB();
     try {
-
-        $sql = 'SELECT id, product_id, desired_quantity, unit_price FROM Cart';
-        $sql2 = 'SELECT id, name, description FROM Products';
+        $id = get_user_id();
+        $sql = "SELECT id, product_id, desired_quantity, unit_price FROM Cart WHERE user_id = $id";
         $stmt = $db -> prepare($sql);
         $stmt -> execute();
 
         $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
         if ($stmt -> rowCount()>0) {
+            $count = 0; ?>
+
+        <html>
+            <body>
+                <div class="container">
+                    <div class="heading">
+                        <h2 class = "header">Shopping Cart</h2>
+                        <h4 class="remove">Remove all items</h4>
+                    </div>
+        <?php
+            $total = 0;
             foreach ($products as $item) { 
-                /*echo '<div class="items">';
-                echo '<h1 class="name">' . $item['name'] . '</h1>';
-                echo '<h3 class="description">' . $item['description'] . '</h3>';
+
+                $item_id = $item['product_id'];
+                $sql2 = "SELECT name, description FROM Products WHERE id=$item_id";
+                $stmt2 = $db -> prepare($sql2);
+                $stmt2 -> execute();
+                $products2 = $stmt2->fetchAll(PDO::FETCH_ASSOC);
+                
+
+                echo '<div class="items">';
+                echo '<h1 class="name"><a href="item.php?product_id=' . $item_id . '">' . $products2[0]['name'] . '</a></h1>';
+                echo '<h3 class="description">' . $products2[0]['description'] . '</h3>';
                 echo '<div class="quant">';
-                echo '<div class="quantButton" onclick="updateQuantity(' . $row['id'] . ', -1)">-</div>';
-                echo '<h3 class="quantity" id="quantity_' . $row['id'] . '">1</h3>';
-                echo '<div class="quantButton" onclick="updateQuantity(' . $row['id'] . ', 1)">+</div>';
+                echo '<div class="quantButton" onclick="updateQuantity(' . $item['id'] . ', -1)">-</div>';
+                echo '<h3 class="quantity" id="quantity_' . $item['id'] . '">1</h3>';
+                echo '<div class="quantButton" onclick="updateQuantity(' . $item['id'] . ', 1)">+</div>';
                 echo '</div>';
-                echo '<h3 class="price">$' . number_format($item['price'], 2) . '</h3>';
+                echo '<h3 class="unit_price">$' . number_format((float)($item['unit_price']*$item['desired_quantity']), 2) . '</h3>';
                 echo '<h3 class="removeItem" onclick="removeItem(' . $item['id'] . ')">Remove</h3>';
                 echo '</div>';//*/
-            }
 
-        }
- 
-    } catch (Exception $e) {
-        echo $e;
-    }
+                $total+= (float)($item['unit_price']*$item['desired_quantity']);
 
-?>
-
-<html>
-    <body>
-        <div class="container">
-            <div class="heading">
-                <h2 class = "header">Shopping Cart</h2>
-                <h4 class="remove">Remove all items</h4>
-            </div>
-
-            <div class="items">
-                <h1 class="name" href="item.php?product_id=' . $item['id'] . '">Item Name</h1>
-                <h3 class="description">description here</h3>
-                <div class = "quant">
-                    <div class="quantButton" onclick="updateQuantity($row['id'], -1)">-</div>
-                    <h3 class="quantity" id="quantity_' . $row['id'] . '">1</h3>
-                    <div class="quantButton" onclick="updateQuantity($row['id'], 1)">+</div>
-                   <!-- <div class="quantButton" onclick="updateQuantity($row['id'], -1)">-</div>
-                    <h3 class="quantity" id="quantity_' . $row['id'] . '">1</h3>
-                    <div class="quantButton" onclick="updateQuantity($row['id'], 1)">+</div> -->
-                </div>
-
-                <h3 class="price">$0.00 / each</h3>
-                <h3 class="removeItem">Remove</h3>
-
-            </div>  
+                $count++;
+            } ?>
 
             <div></div>
 
@@ -67,16 +56,25 @@
                         <div class="total_text">Sub-Total</div>
                         <div class="numItems"># of items</div>
                     </div>
-                    <div class="total">$0.00</div>
+                    <div class="total">$<?php echo number_format($total, 2); ?></div>
                 </div>
                 <button class="checkoutButton">Checkout</button>
             </div>
-            
-        </div>
-    </body>
-    
 
-</html>
+            </div>
+            </body>
+
+
+            </html>
+
+    <?php
+        }
+ 
+    } catch (Exception $e) {
+        echo $e;
+    }
+
+?>
 
 <script>
 

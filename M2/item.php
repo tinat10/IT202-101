@@ -34,42 +34,14 @@ try {
 
         if (has_role("Admin") || has_role("Shop Owner")) { 
             echo 'Edit Item: <a href="edit_item.php?product_id=' . $item['id'] . '">' . $item['name'] . '</a><br>';
-
-            ?>
-            <html>
-
-
-                <style> 
-
-                    .edit_item {
-                        margin-top: 40px;
-                        text-align: center;
-                    }
-
-                    .edit_item a {
-                        text-decoration: none;
-                        color: #333;
-                        padding: 5px 10px;
-                        background-color: #ddd;
-                        border-radius: 4px;
-                    }
-
-                    .edit_item a:hover {
-                        background-color: #ccc;
-                    }
-
-                </style>
-
-
-            </html>
-
-        <?php 
         }
+
         if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_to_cart'])) { 
 
             if (!is_logged_in()) {
-                header('Location: login.php');
-                echo "did not reach";
+                header('Location: login.php?status=wantsCart');
+                echo "Must log in first to have a cart";
+                exit;
             }
             else {
                 $product_id = $item['id'];
@@ -77,14 +49,16 @@ try {
                 $desired_quantity = 1;
                 $unit_price = $item['unit_price'];
 
-                echo "here". $product_id . $user_id . $desired_quantity . $unit_price;
+               // echo "here". $product_id . $user_id . $desired_quantity . $unit_price;
 
-                $stmt2 = $db->prepare("INSERT INTO Cart  (product_id, user_id, desired_quantity, unit_price) VALUES(:product_id, :user_id, :desired_quantity, :unit_price)");
+                $stmt2 = $db->prepare("INSERT INTO Cart (product_id, user_id, desired_quantity, unit_price) VALUES(:product_id, :user_id, :desired_quantity, :unit_price)");
                 $stmt2->execute([":product_id" => $product_id, ":user_id" => $user_id, ":desired_quantity" => $desired_quantity, ":unit_price" => $unit_price]);
                 
+                echo "Successfully added item to cart!";
+                //header('Location: cart.php');
+                //exit;
             }
         }
-
 
     }
 } catch (Exception $e) {
@@ -98,7 +72,7 @@ try {
 
 <html>
 
-    <form id='form' method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+    <form id='form' method="POST">
         <div class="add_to_cart">
             <input type="submit" name="add_to_cart" value="Add to Cart">
         </div>
@@ -112,6 +86,7 @@ try {
 
         .add_to_cart {
             margin-top: 40px;
+            font-size: 50px;
             text-align: center;
         }
 
@@ -140,22 +115,5 @@ try {
             background-color: #ccc;
         }
     </style>
-
-    <script>
-        function addToCart() {
-            var formData = new FormData(document.querySelector('form'));
-
-            fetch('process.php', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.text())
-            .then(data => {
-                console.log(data); // Log the response from the server
-                // You can add additional logic here based on the response
-            })
-            .catch(error => console.error('Error:', error));
-        }
-    </script>
 
 </html>

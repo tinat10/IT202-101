@@ -131,7 +131,6 @@
                     echo "Unit Price: $" . $item['unit_price'] . "<br>";
                     echo "Visibility: TRUE <br></div>";    
                     
-
                     if (has_role("Admin") | has_role("Shop Owner")) {
                         echo 'Edit Item: <a href="edit_item.php?product_id=' . $item['id'] . '">' . $item['name'] . '</a><br>';
                     }
