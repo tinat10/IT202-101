@@ -3,14 +3,12 @@
 require(__DIR__ . "/partials/nav.php");
 //require_once(__DIR__ . "/partials/flash.php");
 
-/*if (!has_role("Admin")) {
+if (!has_role("Admin")) {
     flash("You don't have permission to view this page", "warning");
     echo ("You don't have permission to view this page");
     //die(header("Location: " . get_url("home.php")));
 }
-else { ?>
-
-<?php*/
+else { 
     if (isset($_POST["name"]) && isset($_POST["description"]) && isset($_POST["category"]) && isset($_POST["stock"]) &&isset($_POST["unit_price"])) {
         $name = se($_POST, "name", "", false);
         $desc = se($_POST, "description", "", false);
@@ -35,7 +33,7 @@ else { ?>
             }
         }
     
-//}
+}
 ?>
 
 

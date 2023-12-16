@@ -8,15 +8,15 @@ try {
 } catch(Exception $e) {}
 //require_once(__DIR__ . "/partials/flash.php");
 
-/*if (!has_role("Admin")) {
+if (!has_role("Admin")) {
     flash("You don't have permission to view this page", "warning");
     echo ("You don't have permission to view this page");
     //die(header("Location: " . get_url("home.php")));
 }
-else { ?>
+else { 
 
-<?php*/
     $db = getDB();
+
     $sql = 'SELECT * FROM Products';
     $stmt = $db -> prepare($sql);
     $stmt -> execute();
@@ -27,6 +27,31 @@ else { ?>
         $item = ($products[$itemNum-1]);
     }
 
+    $product_id = $item['id'];
+
+    if (isset($_POST["toggle_visibility"])) {
+        // "reached";
+        //$product_id = se($_POST, "product_id", "", false);
+        if (!empty($product_id)) {
+
+            $newVisibility = $item['visibility'] == 1 ? 0 : 1;
+            $stmt = $db->prepare("UPDATE Products SET visibility = :newVisibility WHERE id = :rid");
+
+            try {
+                $stmt->execute([":newVisibility" => $newVisibility, ":rid" => $product_id]);
+                echo "success!";
+                //flash("Updated Role", "success");
+            } catch (PDOException $e) {
+                echo "boo you suck";
+                //flash(var_export($e->errorInfo, true), "danger");
+            }
+        }
+    }
+
+    $sql = 'SELECT * FROM Products';
+    $stmt = $db -> prepare($sql);
+    $stmt -> execute();
+
 
     if (isset($_POST["name"]) && isset($_POST["description"]) && isset($_POST["category"]) && isset($_POST["stock"]) && isset($_POST["unit_price"])) {
         $name = se($_POST, "name", "", false);
@@ -34,7 +59,6 @@ else { ?>
         $categ = se($_POST, "category", "", false);
         $stock = se($_POST, "stock", "", false);
         $price = se($_POST, "unit_price", "", false);
-        $product_id =  $item['id'];    
 
         $stmt = $db->prepare("UPDATE Products SET name = :name, description = :desc, category = :categ, stock = :stock, unit_price = :price WHERE id = :product_id");
         try {
@@ -42,7 +66,7 @@ else { ?>
             //flash("Successfully created role $name!", "success");
             echo "success";
         } catch (PDOException $e) {
-            echo "haha suck ass. it didn't work.";
+            echo "haha suck it. it didn't work.";
             echo $e;
             if ($e->errorInfo[1] === 1062) {
                 //flash("A role with this name already exists, please try another", "warning");
@@ -52,11 +76,18 @@ else { ?>
         }
     }
     
-//}
+}
 ?>
 
 
 <h1>Edit Product</h1>
+
+<form method="POST" class="visibilityForm" name="toggleVisibility">
+    Visibility:
+    <input type="hidden" name="product_id" value="<?php echo se($product_id); ?>" />
+    <button type="submit" name="toggle_visibility">Toggle</button>
+</form>
+
 <form method="POST">
     <div>
         <label for="name">Name</label>
@@ -83,12 +114,19 @@ else { ?>
 </form>
 
     <style>
+
+        .visibilityForm {
+            font-family: cursive;
+            padding: 5px;
+
+        }
+
         h1 {
             font-family: cursive;
         }
 
         .description {
-            margin-top: 10px;
+            margin-top: 5px;
         }
 
         body {

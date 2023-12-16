@@ -98,6 +98,8 @@ require_once(__DIR__ . "/../lib/functions.php");
                     <li><a href="list_roles.php">Roles List</a></li>
                     <li><a href="create_role.php">Create Role</a></li>
                     <li><a href="add_product.php">Add Products</a></li>
+                    <li><a href="inventory.php">Inventory</a></li>
+
                 </div>
                 <style>
                     li {

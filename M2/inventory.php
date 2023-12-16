@@ -6,7 +6,7 @@
         .navBar {
             background-color: #FFE5B4;
             padding: 5px;
-            height: 50px;
+            height: 20px;
             align-items: center;
         }
 

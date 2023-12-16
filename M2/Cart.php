@@ -11,7 +11,7 @@
 
         $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
         if ($stmt -> rowCount()>0) {
-            foreach ($products as $item) {
+            foreach ($products as $item) { 
                 /*echo '<div class="items">';
                 echo '<h1 class="name">' . $item['name'] . '</h1>';
                 echo '<h3 class="description">' . $item['description'] . '</h3>';
@@ -48,12 +48,15 @@
                     <div class="quantButton" onclick="updateQuantity($row['id'], -1)">-</div>
                     <h3 class="quantity" id="quantity_' . $row['id'] . '">1</h3>
                     <div class="quantButton" onclick="updateQuantity($row['id'], 1)">+</div>
+                   <!-- <div class="quantButton" onclick="updateQuantity($row['id'], -1)">-</div>
+                    <h3 class="quantity" id="quantity_' . $row['id'] . '">1</h3>
+                    <div class="quantButton" onclick="updateQuantity($row['id'], 1)">+</div> -->
                 </div>
 
                 <h3 class="price">$0.00 / each</h3>
                 <h3 class="removeItem">Remove</h3>
 
-            </div>
+            </div>  
 
             <div></div>
 
@@ -82,12 +85,13 @@
         var quantityElement = document.getElementById('quantity_' + productId);
         var currentQuantity = parseInt(quantityElement.innerText);
 
-        if (quantity+value <= 0)
-            quantity += value;
-        quantityElement.innerText = quantity;
+        if (currentQuantity + value >= 0) {
+            var newQuantity = currentQuantity + value;
+            quantityElement.innerText = newQuantity;
 
-        if (newQuantity === 0) {
-            removeItem(productId);
+            if (newQuantity === 0) {
+                removeItem(productId);
+            }
         }
     }
 

@@ -16,13 +16,14 @@ if (is_logged_in()) {
                 $db = getDB();
                 $stmt = $db->prepare("UPDATE Roles SET is_active = !is_active WHERE id = :rid");
                 try {
-                    $stmt->execute([":rid" => $role_id]);
+                    $stmt->execute([":rid" => $product_id]);
                     //flash("Updated Role", "success");
                 } catch (PDOException $e) {
                     //flash(var_export($e->errorInfo, true), "danger");
                 }
             }
         }
+        
         $query = "SELECT id, name, description, is_active from Roles";
         $params = null;
         if (isset($_POST["role"])) {
