@@ -41,7 +41,7 @@
             $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
             $count = 0;
             if ($stmt -> rowCount()>0) {
-                echo "<h1>Products<h1><br><br>";
+                echo "<h1>Inventory Products<h1><br><br>";
                 foreach ($products as $item) {
 
                     echo "<div><li>";
@@ -52,11 +52,13 @@
                     echo "Stock: " . $item['stock'] . "<br>";
                     echo "Unit Price: $" . $item['unit_price'] . "<br>";
                     if ($item['visibility'] == 1) {
-                        echo "Visibility: TRUE <br></div><br>";    
+                        echo "Visibility: TRUE <br></div>";    
                     }
                     else {
-                        echo "Visibility: FALSE <br></div><br>";    
+                        echo "Visibility: FALSE <br></div>";    
                     }
+
+                    echo 'Edit Item: <a href="edit_item.php?product_id=' . $item['id'] . '">' . $item['name'] . '</a><br><br>';
                     
                     $count++;
                     

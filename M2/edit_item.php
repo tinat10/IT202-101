@@ -95,15 +95,15 @@ else {
     </div>
     <div>
         <label for="category">Category</label>
-        <input id="category" name="category"  />
+        <input id="category" name="category"  required />
     </div>
     <div>
         <label for="stock">Stock</label>
-        <input type="number" id="stock" name="stock"  />
+        <input type="number" id="stock" name="stock"  required/>
     </div>
     <div>
         <label for="unit_price">Unit Price</label>
-        <input type = "number" step="0.01" id="unit_price" name="unit_price"  />
+        <input type = "number" step="0.01" id="unit_price" name="unit_price" required />
     </div>
     <div class=description>
         <label for="d">Description</label>

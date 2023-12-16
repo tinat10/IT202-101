@@ -32,11 +32,12 @@ try {
         else
             echo "Visibility: FALSE <br>";
 
-        if (has_role("Admin") || has_role("Shop Owner")) { ?>
+        if (has_role("Admin") || has_role("Shop Owner")) { 
+            echo 'Edit Item: <a href="edit_item.php?product_id=' . $item['id'] . '">' . $item['name'] . '</a><br>';
+
+            ?>
             <html>
-                <div class="edit_item">
-                    <a href="../edit_item.php">Edit Item</a>
-                </div>
+
 
                 <style> 
 
@@ -87,7 +88,7 @@ try {
 
     }
 } catch (Exception $e) {
-    echo "haha suck ass. it didn't work.";
+    echo "haha suck butt. it didn't work.";
     echo "Error: " . $e->getMessage();
 
 }

@@ -91,6 +91,7 @@
     $sortOption = $_POST['sortOption'] ?? '';
 
     //echo $categoryFilter . $nameFilter . $sortOption;
+    // UCID: tkt November 15, 2023
 
     $sql = "SELECT id, name, stock, category, unit_price, visibility FROM Products WHERE 1 ";
     if ($categoryFilter !== '') {
