@@ -121,9 +121,41 @@
 
         <?php
             }
+            else { ?>
+                    <body>
+                    <div class="container">
+                        <div class="heading">
+                            <h2 class = "header">Shopping Cart</h2>
+                            <?php 
+                            echo '<form method="POST" name="remove_all_items">';
+                                echo '<button class="removeAll" name="remove_all_items" type="submit">Remove All Items</button>';
+                            echo '</form>';
+                            //<h4 class="remove">Remove all items</h4>
+                            ?>
+                            
+                        </div>
+                        <div></div>
+
+                <hr> 
+                <div class="checkout">
+                    <div class="above">
+                        <div>
+                            <div class="total_text">Sub-Total</div>
+                            <div class="numItems" >Num of Items: <?php echo 0; ?></div>
+                        </div>
+                        <div class="total">$<?php echo number_format(0, 2); ?></div>
+                    </div>
+                    <button class="checkoutButton">Checkout</button>
+                </div>
+
+                </div>
+                </body>
+            <?php
+            }
     
         } catch (Exception $e) {
             echo $e;
+            
         }
     } else {
         echo "User must be logged in to view cart";
