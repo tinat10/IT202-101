@@ -31,12 +31,7 @@ else {
                     //flash(var_export($e->errorInfo, true), "danger");
                 }
             }
-        }
-    
-}
-?>
-
-
+        }?>
 <h1>Add Products</h1>
 <form method="POST">
     <div>
@@ -90,4 +85,11 @@ else {
     </style>
 
     
+
+
+        <?php
+    
+}
+?>
+
 
