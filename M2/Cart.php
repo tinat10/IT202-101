@@ -1,107 +1,157 @@
 <?php 
     require_once(__DIR__ . "/partials/nav.php");
-
-    $db = getDB();
-    try {
-        $id = get_user_id();
-        $sql = "SELECT id, product_id, desired_quantity, unit_price FROM Cart WHERE user_id = $id";
-        $stmt = $db -> prepare($sql);
-        $stmt -> execute();
-
-        $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        if ($stmt -> rowCount()>0) {
-            $count = 0; ?>
-
-        <html>
-            <body>
-                <div class="container">
-                    <div class="heading">
-                        <h2 class = "header">Shopping Cart</h2>
-                        <h4 class="remove">Remove all items</h4>
-                    </div>
-        <?php
-            $total = 0;
-            foreach ($products as $item) { 
-
-                $item_id = $item['product_id'];
-                $sql2 = "SELECT name, description FROM Products WHERE id=$item_id";
-                $stmt2 = $db -> prepare($sql2);
-                $stmt2 -> execute();
-                $products2 = $stmt2->fetchAll(PDO::FETCH_ASSOC);
-                
-
-                echo '<div class="items">';
-                echo '<h1 class="name"><a href="item.php?product_id=' . $item_id . '">' . $products2[0]['name'] . '</a></h1>';
-                echo '<h3 class="description">' . $products2[0]['description'] . '</h3>';
-                echo '<div class="quant">';
-                echo '<div class="quantButton" onclick="updateQuantity(' . $item['id'] . ', -1)">-</div>';
-                echo '<h3 class="quantity" id="quantity_' . $item['id'] . '">1</h3>';
-                echo '<div class="quantButton" onclick="updateQuantity(' . $item['id'] . ', 1)">+</div>';
-                echo '</div>';
-                echo '<h3 class="unit_price">$' . number_format((float)($item['unit_price']*$item['desired_quantity']), 2) . '</h3>';
-                echo '<h3 class="removeItem" onclick="removeItem(' . $item['id'] . ')">Remove</h3>';
-                echo '</div>';//*/
-
-                $total+= (float)($item['unit_price']*$item['desired_quantity']);
-
-                $count++;
-            } ?>
-
-            <div></div>
-
-            <hr> 
-            <div class="checkout">
-                <div class="above">
-                    <div>
-                        <div class="total_text">Sub-Total</div>
-                        <div class="numItems"># of items</div>
-                    </div>
-                    <div class="total">$<?php echo number_format($total, 2); ?></div>
-                </div>
-                <button class="checkoutButton">Checkout</button>
-            </div>
-
-            </div>
-            </body>
+    if (is_logged_in()) {
+        $db = getDB();
 
 
-            </html>
+        if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['remove_all_items'])) {
+            try {
+                $id = get_user_id();
+                $stmt = $db->prepare("DELETE FROM Cart WHERE user_id = :id");
+                $stmt->execute([':id' => $id]);
 
-    <?php
+            } catch (Exception $e) {
+                echo "Exception: " . $e;
+            }
         }
- 
-    } catch (Exception $e) {
-        echo $e;
+        else if ($_SERVER["REQUEST_METHOD"] === "POST") {
+            try {
+                foreach ($_POST['quantity'] as $productId => $newQuantity) {
+                    if ($newQuantity > 0) {
+                        $stmt = $db->prepare("UPDATE Cart SET desired_quantity = :quantity WHERE id = :id");
+                        $stmt->execute([':quantity' => $newQuantity, ':id' => $productId]);
+                    }
+                    else {
+                        $stmt = $db->prepare("DELETE FROM Cart where id = :id");
+                        $stmt-> execute([':id' => $productId]);
+                    }
+                }
+            } catch (Exception $e) {
+                echo "exception: " . $e;
+            }
+            
+        }
+
+
+        try {
+            $id = get_user_id();
+            $sql = "SELECT id, product_id, desired_quantity, unit_price FROM Cart WHERE user_id = $id";
+            $stmt = $db -> prepare($sql);
+            $stmt -> execute();
+
+            $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            if ($stmt -> rowCount()>0) {
+                $count = 0; ?>
+
+            <html>
+                <body>
+                    <div class="container">
+                        <div class="heading">
+                            <h2 class = "header">Shopping Cart</h2>
+                            <?php 
+                            echo '<form method="POST" name="remove_all_items">';
+                                echo '<button class="removeAll" name="remove_all_items" type="submit">Remove All Items</button>';
+                            echo '</form>';
+                            //<h4 class="remove">Remove all items</h4>
+                            ?>
+                            
+                        </div>
+            <?php
+                $total = 0;
+                $numItems = 0;
+                foreach ($products as $item) { 
+
+                    $item_id = $item['product_id'];
+                    $sql2 = "SELECT name, description FROM Products WHERE id=$item_id";
+                    $stmt2 = $db -> prepare($sql2);
+                    $stmt2 -> execute();
+                    $products2 = $stmt2->fetchAll(PDO::FETCH_ASSOC);
+                    
+
+                    echo '<div class="items">';
+                    echo '<h1 class="name"><a href="item.php?product_id=' . $item_id . '">' . $products2[0]['name'] . '</a></h1>';
+                    echo '<h3 class="description">' . $products2[0]['description'] . '</h3>';
+                    echo '<div class="quant">';
+
+                    echo '<form method="POST" name="quant">';
+                        echo '<div class="quantButtons">';
+                            echo '<input type="hidden" name="quantity[' . $item['id'] . ']" value="' . $item['desired_quantity'] . '">';
+                            echo '<button class="quantButton" type="submit" name="quantity[' . $item['id'] . ']" value="' . ($item['desired_quantity'] - 1) . '">-</button>';
+                            echo '<h3 class="quantity">' . $item['desired_quantity'] . '</h3>';
+                            echo '<button class="quantButton" type="submit" name="quantity[' . $item['id'] . ']" value="' . ($item['desired_quantity'] + 1) . '">+</button>';
+                        echo '</div>';
+                    echo '</form>';
+
+                    echo '</div>';
+                    echo '<h3 class="unit_price">$' . number_format((float)($item['unit_price']*$item['desired_quantity']), 2) . '</h3>';
+                    
+                    echo '<form method="POST" name="removals">';
+                        echo '<input type="hidden" name="quantity[' . $item['id'] . ']" value="' . $item['desired_quantity'] . '">';
+                        echo '<button class="remove_item" type="submit" name="quantity[' . $item['id'] . ']" value="' . 0 . '">Remove</button>';
+                    echo '</form>';
+
+                    //echo '<h3 class="removeItem" onclick="removeItem(' . $item['id'] . ')">Remove</h3>';
+
+                    echo '</div>';//*/
+
+                    $total+= (float)($item['unit_price']*$item['desired_quantity']);
+                    $numItems+=$item['desired_quantity'];
+                    $count++;
+                } ?>
+
+                <div></div>
+
+                <hr> 
+                <div class="checkout">
+                    <div class="above">
+                        <div>
+                            <div class="total_text">Sub-Total</div>
+                            <div class="numItems" >Num of Items: <?php echo $numItems; ?></div>
+                        </div>
+                        <div class="total">$<?php echo number_format($total, 2); ?></div>
+                    </div>
+                    <button class="checkoutButton">Checkout</button>
+                </div>
+
+                </div>
+                </body>
+
+
+                </html>
+
+        <?php
+            }
+    
+        } catch (Exception $e) {
+            echo $e;
+        }
+    } else {
+        echo "User must be logged in to view cart";
     }
 
 ?>
 
-<script>
-
-
-    function updateQuantity(productId, value) {
-        var quantityElement = document.getElementById('quantity_' + productId);
-        var currentQuantity = parseInt(quantityElement.innerText);
-
-        if (currentQuantity + value >= 0) {
-            var newQuantity = currentQuantity + value;
-            quantityElement.innerText = newQuantity;
-
-            if (newQuantity === 0) {
-                removeItem(productId);
-            }
-        }
-    }
-
-    function removeItem(productID) {
-        var item = document.querySelector('.items[data-product-id="' + productId + '"]');
-        if (itemElement) {
-            itemElement.remove();
-        }
-    }
-</script>
-
 <style>
+
+    .removeAll {
+        font-family: monospace;
+        padding: 10px;
+        margin-right: 10px;
+        margin-top: 15px;
+        font-weight: bold;
+    }
+
+    .removeAll:hover , .remove_item:hover {
+        color: red;
+    }
+
+    .quantButtons {
+        display: flex;
+    }
+
+    .remove_item {
+        font-family: monospace;
+    }
 
     .checkoutButton {
         margin-top: 10px;

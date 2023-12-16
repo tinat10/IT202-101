@@ -1,9 +1,12 @@
 <?php
 try {
-    if(($_GET['status']) == "loggedout"){
+    if (empty(($_GET['status']))) {
+        echo "";
+    }
+    else if(($_GET['status']) == "loggedout"){
         echo '<div>You have been logged out!</div>';
     }
-    if (($_GET['status']) == "wantsCart") {
+    else if (($_GET['status']) == "wantsCart") {
         echo '<div>You must be logged in in order to start a cart!</div>';
     }
 } catch(Exception $e) {}
